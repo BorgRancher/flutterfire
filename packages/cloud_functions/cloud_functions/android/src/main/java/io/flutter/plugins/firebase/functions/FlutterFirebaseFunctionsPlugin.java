@@ -22,6 +22,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.firebase.core.FlutterFirebasePlugin;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.URL;
@@ -94,7 +96,7 @@ public class FlutterFirebaseFunctionsPlugin
               httpsCallableReference = firebaseFunctions.getHttpsCallable(functionName, options);
             } else if (functionUri != null) {
               httpsCallableReference =
-                  firebaseFunctions.getHttpsCallableFromUrl(new URL(functionUri), options);
+                  firebaseFunctions.getHttpsCallableFromUrl(Urls.create(functionUri, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), options);
             } else {
               throw new IllegalArgumentException("Either functionName or functionUri must be set");
             }
